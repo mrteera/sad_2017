@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import revenuerecognition.MfDate;
 import revenuerecognition.Money;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 /**
  * Created by mrteera on 1/26/2017 AD.
@@ -131,18 +133,19 @@ public class Contract {
 
     public Money recognizedRevenue(MfDate asOf) {
         Money result = Money.dollars(0);
-        EntityManagerFactory entityManagerFactory;
-        entityManagerFactory = Persistence.createEntityManagerFactory( "NewPersistenceUnit" );
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
-        for ( RevenueRecognition revenuerecognition : query_result ) {
-            if (revenuerecognition.isRecognizableBy(asOf))
-                result = result.add(revenuerecognition.getAmount());
-        }
-        entityManagerFactory.close();
+//        EntityManagerFactory entityManagerFactory;
+//        entityManagerFactory = Persistence.createEntityManagerFactory( "NewPersistenceUnit" );
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
+//        for ( RevenueRecognition revenuerecognition : query_result ) {
+//            if (revenuerecognition.isRecognizableBy(asOf))
+//                result = result.add(revenuerecognition.getAmount());
+//        }
+//        entityManagerFactory.close();
         return result;
     }
 
+    @Transactional
     public void calculateRecognitions() {
         product.calculateRevenueRecognitions(this);
     }
@@ -152,13 +155,7 @@ public class Contract {
 //    }
 
     public void addRevenueRecognition(RevenueRecognition revenueRecognition) {
-        EntityManagerFactory entityManagerFactory;
-        entityManagerFactory = Persistence.createEntityManagerFactory( "NewPersistenceUnit" );
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(revenueRecognition);
-        entityManager.getTransaction().commit();
-        entityManagerFactory.close();
+//        entityManager.persist(revenueRecognition);
     }
 
     public int _getRevenueRecognitionSize()

@@ -106,6 +106,7 @@ public class Product {
         this.type = type;
     }
 
+    @Transactional
     void calculateRevenueRecognitions(Contract contract) {
         recognitionStrategy.calculateRevenueRecognitions(contract);
     }

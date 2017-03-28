@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.annotation.Commit;
 import revenuerecognition.MfDate;
+import revenuerecognition.Money;
 
 import static org.junit.Assert.*;
 
@@ -47,20 +48,25 @@ public class RecognitionServiceImplTest extends AbstractRecognitionTest {
         @Test
         public void testCalculaterevenuerecognitionsservicecomplete() throws InterruptedException {
             dateToday = new MfDate();
-            rs.insertProductWP("emacs");
-//            long newContractID = rs.insertContract(rs.insertProductWP(
-//                    "emacs"),
-//                    Money.dollars(1500),
-//                    dateToday.addDays(-1)
-//            ).getId();
-//            rs.calculateRevenueRecognitions(newContractID);
+            long newContractID = rs.insertContract(rs.insertProductWP(
+                    "emacs"),
+                    Money.dollars(1500),
+                    dateToday.addDays(-1)
+            ).getId();
+            System.out.println("===================");
+            System.out.println(newContractID);
+            System.out.println("===================");
+            rs.calculateRevenueRecognitions(newContractID);
+//            boolean test = rs.checkRevenue();
+//            System.out.println("============");
+//            System.out.println(test);
+//            System.out.println("============");
+
 //            Money result = rs.recognizedRevenue(
 //                    1,
 //                    dateToday.addDays(-1)
 //            );
 //            assertEquals(1500, result.amount().doubleValue());
 //            assertTrue(1500 == result.amount().doubleValue());
-//            Thread.sleep(40000);
-            assertTrue(true);
         }
 }
