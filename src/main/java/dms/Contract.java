@@ -131,19 +131,19 @@ public class Contract {
 //        return result;
 //    }
 
-    public Money recognizedRevenue(MfDate asOf) {
-        Money result = Money.dollars(0);
-//        EntityManagerFactory entityManagerFactory;
-//        entityManagerFactory = Persistence.createEntityManagerFactory( "NewPersistenceUnit" );
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//    private RecognitionService rs;
+//
+//    @Transactional
+//    public Money recognizedRevenue(MfDate asOf) {
+//        Money result = Money.dollars(0);
+//        return rs.getRevenueRecognition(asOf);
 //        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
 //        for ( RevenueRecognition revenuerecognition : query_result ) {
 //            if (revenuerecognition.isRecognizableBy(asOf))
 //                result = result.add(revenuerecognition.getAmount());
 //        }
-//        entityManagerFactory.close();
-        return result;
-    }
+//        return result;
+//    }
 
     @Transactional
     public void calculateRecognitions() {

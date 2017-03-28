@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import revenuerecognition.*;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Created by mrteera on 1/26/2017 AD.
@@ -27,19 +28,33 @@ public class RecognitionServiceImpl implements RecognitionService {
     public void calculateRevenueRecognitions(long contractNumber) {
         Contract contract = findContractByID(contractNumber);
 //        contract.calculateRecognitions();
-
         RevenueRecognition revenueRecognition;
         revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
-        System.out.println("------------REVENUERECOGNITION---------------");
-        System.out.println(contract.getRevenue().amount());
-        System.out.println(contract.getWhenSigned());
-        System.out.println(revenueRecognition.getAmount().amount());
-        System.out.println("------------REVENUERECOGNITION---------------");
         entityManager.persist(revenueRecognition);
     }
 
+    @Transactional
     public Money recognizedRevenue(long contractNumber, MfDate asOf) {
-        return Contract.read(contractNumber).recognizedRevenue(asOf);
+//        return Contract.read(contractNumber).recognizedRevenue(asOf);
+        Contract contract =  entityManager.find(Contract.class, contractNumber);
+//        return contract.recognizedRevenue(asOf);
+        return getRevenueRecognition(asOf);
+    }
+
+    @Transactional
+    public Money getRevenueRecognition(MfDate asOf) {
+        Money result = Money.dollars(0);
+        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
+        for ( RevenueRecognition revenuerecognition : query_result ) {
+            if (revenuerecognition.isRecognizableBy(asOf))
+                result = result.add(revenuerecognition.getAmount());
+        }
+        return result;
+    }
+
+    @Transactional
+    public void recognizedRevenueComplete(RevenueRecognition revenueRecognition) {
+        entityManager.persist(revenueRecognition);
     }
 
     @Transactional

@@ -13,16 +13,13 @@ public class CompleteRecognitionStrategy extends RecognitionStrategy {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private RecognitionService rs;
+
 
     @Transactional
     void calculateRevenueRecognitions(Contract contract) {
         RevenueRecognition revenueRecognition;
         revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
-        System.out.println("------------REVENUERECOGNITION---------------");
-        System.out.println(contract.getRevenue().amount());
-        System.out.println(contract.getWhenSigned());
-        System.out.println(revenueRecognition.getAmount().amount());
-        System.out.println("------------REVENUERECOGNITION---------------");
-        entityManager.persist(revenueRecognition);
+        rs.recognizedRevenueComplete(revenueRecognition);
     }
 }

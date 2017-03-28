@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Created by mrteera on 3/28/2017 AD.
  */
-@Commit
+//@Commit
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 public class RecognitionServiceImplTest extends AbstractRecognitionTest {
         @Autowired RecognitionService rs;
@@ -57,16 +57,11 @@ public class RecognitionServiceImplTest extends AbstractRecognitionTest {
             System.out.println(newContractID);
             System.out.println("===================");
             rs.calculateRevenueRecognitions(newContractID);
-//            boolean test = rs.checkRevenue();
-//            System.out.println("============");
-//            System.out.println(test);
-//            System.out.println("============");
 
-//            Money result = rs.recognizedRevenue(
-//                    1,
-//                    dateToday.addDays(-1)
-//            );
-//            assertEquals(1500, result.amount().doubleValue());
-//            assertTrue(1500 == result.amount().doubleValue());
+            Money result = rs.recognizedRevenue(
+                    1,
+                    dateToday.addDays(-1)
+            );
+            assertTrue(1500 == result.amount().doubleValue());
         }
 }
