@@ -146,16 +146,18 @@ public class Contract {
 //    }
 
     @Transactional
-    public void calculateRecognitions() {
-        product.calculateRevenueRecognitions(this);
+    public RevenueRecognition calculateRecognitions() {
+        return product.calculateRevenueRecognitions(this);
     }
 
 //    public void addRevenueRecognition(RevenueRecognition revenueRecognition) {
 //        revenueRecognitions.add(revenueRecognition);
 //    }
 
+    private RecognitionService rs;
     public void addRevenueRecognition(RevenueRecognition revenueRecognition) {
 //        entityManager.persist(revenueRecognition);
+        rs.saveRevenueRecognitions(revenueRecognition);
     }
 
     public int _getRevenueRecognitionSize()

@@ -7,19 +7,21 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Repository
-@Transactional(readOnly = true)
+//@Repository
+//@Transactional(readOnly = true)
 public class CompleteRecognitionStrategy extends RecognitionStrategy {
-    @PersistenceContext
-    private EntityManager entityManager;
+//    @PersistenceContext
+//    private EntityManager entityManager;
 
+    @Autowired
     private RecognitionService rs;
 
 
-    @Transactional
-    void calculateRevenueRecognitions(Contract contract) {
+//    @Transactional
+    RevenueRecognition calculateRevenueRecognitions(Contract contract) {
         RevenueRecognition revenueRecognition;
         revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
-        rs.recognizedRevenueComplete(revenueRecognition);
+        return revenueRecognition;
+//        rs.recognizedRevenueComplete(revenueRecognition);
     }
 }

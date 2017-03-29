@@ -8,6 +8,9 @@ import revenuerecognition.Money;
  */
 public interface RecognitionService {
     long insertProductWP(String name);
+    long insertProductSpreadsheet(String name);
+    int countRecognitions();
+    void saveRevenueRecognitions(RevenueRecognition rr);
     Contract insertContract(long productID, Money revenue, MfDate whenSigned);
     void calculateRevenueRecognitions(long contractNumber);
     Money recognizedRevenue(long contractNumber, MfDate asOf);

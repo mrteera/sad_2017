@@ -107,7 +107,7 @@ public class Product {
     }
 
     @Transactional
-    void calculateRevenueRecognitions(Contract contract) {
-        recognitionStrategy.calculateRevenueRecognitions(contract);
+    RevenueRecognition calculateRevenueRecognitions(Contract contract) {
+        return recognitionStrategy.calculateRevenueRecognitions(contract);
     }
 }

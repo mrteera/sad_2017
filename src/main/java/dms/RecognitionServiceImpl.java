@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import revenuerecognition.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
@@ -27,10 +29,15 @@ public class RecognitionServiceImpl implements RecognitionService {
     @Transactional
     public void calculateRevenueRecognitions(long contractNumber) {
         Contract contract = findContractByID(contractNumber);
-//        contract.calculateRecognitions();
-        RevenueRecognition revenueRecognition;
-        revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
+        RevenueRecognition revenueRecognition = contract.calculateRecognitions();
+//        RevenueRecognition revenueRecognition;
+//        revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
         entityManager.persist(revenueRecognition);
+    }
+
+    @Transactional
+    public void saveRevenueRecognitions(RevenueRecognition rr) {
+        entityManager.persist(rr);
     }
 
     @Transactional
@@ -71,9 +78,13 @@ public class RecognitionServiceImpl implements RecognitionService {
         return Product.newDatabase(name);
     }
 
+    @Transactional
     public long insertProductSpreadsheet(String name)
     {
-        return Product.newSpreadsheet(name);
+        Product product = new Product(name, "CSV", new ThreeWayRecognitionStrategy(30, 60));
+        entityManager.persist(product);
+        return product.getId();
+//        return Product.newSpreadsheet(name);
     }
 
     public Product findProductByID(long productID) {
@@ -88,8 +99,20 @@ public class RecognitionServiceImpl implements RecognitionService {
 //        return  Contract.addNewContract(Product.read(productID), revenue, whenSigned);
     }
 
-    public int countRecognitions()
-    {	return Contract.countRecognitions();
+    public int countRecognitions() {
+//        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
+        List<RevenueRecognition> query_result = entityManager.createQuery( "from RevenueRecognition ", RevenueRecognition.class ).getResultList();
+        System.out.println("bbbbbbbbbbbbbbbbbbbbb");
+        System.out.println(query_result);
+        System.out.println("bbbbbbbbbbbbbbbbbbbbb");
+        return query_result.size();
+//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+//        cq.select(cb.count(cq.from(RevenueRecognition.class)));
+
+//        return entityManager.createQuery(cq).getSingleResult();
+//        return entityManager.createQuery(cq).getResultList().size();
+//        return Contract.countRecognitions();
     }
 
     public boolean checkRevenue() {
