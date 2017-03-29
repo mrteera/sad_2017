@@ -29,10 +29,13 @@ public class RecognitionServiceImpl implements RecognitionService {
     @Transactional
     public void calculateRevenueRecognitions(long contractNumber) {
         Contract contract = findContractByID(contractNumber);
-        RevenueRecognition revenueRecognition = contract.calculateRecognitions();
+        List<RevenueRecognition> revenueRecognitions = contract.calculateRecognitions();
+        for ( RevenueRecognition revenuerecognition : revenueRecognitions ) {
+            entityManager.persist(revenuerecognition);
+        }
 //        RevenueRecognition revenueRecognition;
 //        revenueRecognition = new RevenueRecognition(contract.getRevenue(),contract.getWhenSigned());
-        entityManager.persist(revenueRecognition);
+//        entityManager.persist(revenueRecognition);
     }
 
     @Transactional

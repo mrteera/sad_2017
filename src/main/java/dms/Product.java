@@ -107,7 +107,7 @@ public class Product {
     }
 
     @Transactional
-    RevenueRecognition calculateRevenueRecognitions(Contract contract) {
+    List<RevenueRecognition> calculateRevenueRecognitions(Contract contract) {
         return recognitionStrategy.calculateRevenueRecognitions(contract);
     }
 }
